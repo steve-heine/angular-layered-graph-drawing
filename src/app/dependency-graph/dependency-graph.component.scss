@@ -1,18 +1,32 @@
 .graphnode{
   border-radius: 5px;
-  width:150px;
-  height:60px;
-  background: cornflowerblue;
-  border: 1px solid darkblue;
-  color:white;
+  width:180px;
+  height:70px;
+  background: white;
+  /*border: 1px solid darkblue;*/
+  color: #5b5959;
   line-height: 16px;
   padding-top: 3px;
+  box-shadow: 3px 2px 6px 0px #959799;
+  position: relative;
+}
+.marker{
+  width: 20px;
+  display: block;
+  float: right;
+  border-radius: 50%;
+  height: 20px;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
 }
 
-.graphnode .rowlabel, .graphnode .nodeName{
-  text-align: center;
+.graphnode .rowlabel, .graphnode .nodeName {
+  text-align: left;
+  font-weight: 600;
+  padding: 0px 5px;
 }
 
-.graphlayer:hover{
+/*.graphlayer:hover{
   border:2px solid red;
-}
+}*/

@@ -12,10 +12,11 @@
   <div class="row full-width" *ngFor="let layer of drawing.layerContents | keyvalue; let i =index">
     <div class="d-flex justify-content-around my-3 full-width graphlayer" style=" width: 100%">
       <ng-container *ngFor="let node of drawing.layerContents.get(i)">
-        <div class="graphnode bg-gradient my-3 d-block " id="dependencyNode_{{node}}">
-          <div class="nodeName">Node - {{node}}</div>
-          <div class="rowlabel">Row - {{i}}  </div>
-          <div class="nodeName">Deps - {{drawing.graph.get(node)}}</div>
+        <div role="button" class="graphnode bg-gradient my-3 d-block " id="dependencyNode_{{node}}" (mouseover)="hideOtherLines(node)" (mouseleave)="redrawAllLines(null)">
+          <div class="nodeName">{{node}}</div>
+          <!--div class="rowlabel">Row/Layer-Rank - {{i}}  </div-->
+          <div class="text-secondary font-weight-normal ps-1" style="font-family:monospace">Deps: {{drawing.graph.get(node)}}</div>
+          <div class="marker" [style.background-color]="nodeColors.get(node)"></div>
         </div>
       </ng-container>
     </div>

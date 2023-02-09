@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
-import {LayeredGraphDrawing} from "../helpers/dag-grid-organizer";
+import {LayeredGraphDrawing} from "../helpers/layerd-grawph-drawing";
 import 'leader-line';
 declare let LeaderLine: any;
 interface Graph {
@@ -25,10 +25,9 @@ interface Edge {
 })
 export class DependencyGraphComponent implements OnInit {
   drawing: any = null;
-
+  showGraphData: boolean = true;
 
   constructor() {
-
   }
 
   ngOnInit(): void {
@@ -44,10 +43,11 @@ export class DependencyGraphComponent implements OnInit {
     graph.set('D', ['B', 'C']);
     graph.set('E', ['B', 'C']);
     graph.set('F', ['A']);
-     graph.set('G',['B','A'])
+    graph.set('G',['B','A'])
     graph.set('5' ,['A']);
-
     graph.set('H',['F'])
+    graph.set('Y',['D'])
+    graph.set('Z', ['B','C','E'])
     const drawing = new LayeredGraphDrawing(graph);
     drawing.draw();
     this.drawing = drawing;
@@ -55,6 +55,7 @@ export class DependencyGraphComponent implements OnInit {
     const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
     await delay(200);
 
+    //Draw lines
     for (const node of this.drawing.graph.keys()) {
       const dependsOn = this.drawing.graph.get(node);
       console.log('node', node, dependsOn)

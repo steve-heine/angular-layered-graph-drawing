@@ -5,8 +5,14 @@
   background: cornflowerblue;
   border: 1px solid darkblue;
   color:white;
+  line-height: 16px;
+  padding-top: 3px;
 }
 
 .graphnode .rowlabel, .graphnode .nodeName{
   text-align: center;
+}
+
+.graphlayer:hover{
+  border:2px solid red;
 }

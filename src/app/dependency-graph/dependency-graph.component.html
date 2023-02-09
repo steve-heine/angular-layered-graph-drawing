@@ -1,0 +1,23 @@
+<p>Rendering dependency grid</p>
+<h3>graph info</h3>
+<div class="container-fluid">
+  <div class="row" *ngFor="let vertex of drawing.graph | keyvalue">
+    <div class="col">
+      {{vertex.key}} - {{vertex.value | json}}
+    </div>
+  </div>
+</div><h4>Draw layered grid</h4>
+<div class="d-flex flex-column " style="width:70vw">
+  <div class="row full-width" *ngFor="let layer of drawing.layerContents | keyvalue; let i =index">
+
+    <div class="d-flex justify-content-around my-3  full-width"  style="border:2px solid red; width: 100%">
+
+    <ng-container *ngFor="let node of drawing.layerContents.get(i)">
+      <div class="graphnode bg-gradient my-3 d-block " id="dependencyNode_{{node}}" >
+        <div class="rowlabel">Row - {{i}}  </div>
+        <div class="nodeName">Node - {{node}}</div>
+      </div>
+    </ng-container>
+  </div>
+  </div>
+</div>

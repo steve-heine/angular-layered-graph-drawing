@@ -1,0 +1,12 @@
+.graphnode{
+  border-radius: 5px;
+  width:150px;
+  height:60px;
+  background: cornflowerblue;
+  border: 1px solid darkblue;
+  color:white;
+}
+
+.graphnode .rowlabel, .graphnode .nodeName{
+  text-align: center;
+}

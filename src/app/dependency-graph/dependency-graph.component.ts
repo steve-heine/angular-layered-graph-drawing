@@ -78,6 +78,9 @@ export class DependencyGraphComponent implements OnInit {
     const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
     await delay(200);
     this.nodeColors = new Map<string, string>();
+    for (const node of this.drawing.graph.keys()) {
+      this.nodeColors.set(node, this.generateRandomColor())
+    }
     this.redrawAllLines();
 
 
@@ -104,7 +107,6 @@ export class DependencyGraphComponent implements OnInit {
     const graphNodes = node || this.drawing.graph.keys();
     //Draw lines
     for (const node of graphNodes) {
-      this.nodeColors.set(node, this.generateRandomColor())
       const dependsOn = this.drawing.graph.get(node);
       console.log('node', node, dependsOn)
       dependsOn.forEach((dn: string) => {

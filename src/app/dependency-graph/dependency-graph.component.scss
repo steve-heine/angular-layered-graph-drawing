@@ -10,6 +10,13 @@
   box-shadow: 3px 2px 6px 0px #959799;
   position: relative;
 }
+.graphnode:hover{
+  box-shadow: 3px 2px 6px 0px #2ba5ff;
+}
+
+.graphnode.selectedNode{
+  box-shadow: 3px 2px 6px 0px #06c94c;
+}
 .marker{
   width: 20px;
   display: block;

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
-import {LayeredGraphDrawing} from "../helpers/layerd-grawph-drawing";
 import 'leader-line';
+import {DependencyGraphService} from "../services/dependency-graph.service";
 declare let LeaderLine: any;
 interface Graph {
   nodes: Node[];
@@ -24,17 +24,27 @@ interface Edge {
   styleUrls: ['./dependency-graph.component.scss']
 })
 export class DependencyGraphComponent implements OnInit {
-  drawing: any = null;
   showGraphData: boolean = true;
   nodeColors: Map <string, string> = new Map<string, string>();
   lines: any[] = [];
-  constructor() {
+  selectedNode: string | null = null;
+  constructor(private dependencyGraphService: DependencyGraphService) {
   }
 
   ngOnInit(): void {
     this.initializeDag();
+    this.dependencyGraphService.selectedNode.subscribe(node=>{
+      this.selectedNode = node;
+    })
   }
 
+  get layerContents(){
+    return this.dependencyGraphService.layerContents;
+  }
+
+  get graph(){
+    return this.dependencyGraphService.graph;
+  }
 
   generateRandomColor(): string {
     // Generate 3 random values for red, green, and blue
@@ -71,14 +81,12 @@ export class DependencyGraphComponent implements OnInit {
     graph.set('H',['F'])
     graph.set('Y',['D'])
     graph.set('Z', ['B','C','E'])
-    const drawing = new LayeredGraphDrawing(graph);
-    drawing.draw();
-    this.drawing = drawing;
-    console.log('Drawing', drawing);
+    this.dependencyGraphService.initGraph(graph);
+    this.dependencyGraphService.draw();
     const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
     await delay(200);
     this.nodeColors = new Map<string, string>();
-    for (const node of this.drawing.graph.keys()) {
+    for (const node of this.graph.keys()) {
       this.nodeColors.set(node, this.generateRandomColor())
     }
     this.redrawAllLines();
@@ -104,11 +112,12 @@ export class DependencyGraphComponent implements OnInit {
 
   redrawAllLines(node?: string | null) {
     this.removeAllLines()
-    const graphNodes = node || this.drawing.graph.keys();
+    const graphNodes = node || this.graph.keys();
     //Draw lines
     for (const node of graphNodes) {
-      const dependsOn = this.drawing.graph.get(node);
+      const dependsOn = this.graph.get(node);
       console.log('node', node, dependsOn)
+      // @ts-ignore
       dependsOn.forEach((dn: string) => {
         console.log('dn', dn)
         const startingElement = document.querySelector(`#dependencyNode_${node}`);
@@ -122,5 +131,9 @@ export class DependencyGraphComponent implements OnInit {
         this.lines.push(line);
       })
     }
+  }
+
+  setSelectedNode(node: string) {
+    this.dependencyGraphService.selectedNode.next((this.selectedNode === node)? null : node);
   }
 }

@@ -44,10 +44,10 @@ export class DependencyGraphComponent implements OnInit {
     graph.set('D', ['B', 'C']);
     graph.set('E', ['B', 'C']);
     graph.set('F', ['A']);
-   //  graph.set('G',['B','A'])
-    //graph.set('5' ,['A']);
+     graph.set('G',['B','A'])
+    graph.set('5' ,['A']);
 
-    //graph.set('H',['F'])
+    graph.set('H',['F'])
     const drawing = new LayeredGraphDrawing(graph);
     drawing.draw();
     this.drawing = drawing;

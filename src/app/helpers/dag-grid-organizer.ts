@@ -64,6 +64,43 @@ export class LayeredGraphDrawing {
     this.layerContents.set(layer, nodes);
   }
 
+
+  private sortByMedianHeuristicSweeps(layer: string[]) {
+    layer.sort((a, b) => {
+      let posA = 0;
+      let posB = 0;
+      for (const [i, l] of this.layerContents.entries()) {
+        if (l.includes(a)) {
+          posA = i;
+        }
+        if (l.includes(b)) {
+          posB = i;
+        }
+      }
+      const dependenciesA = this.graph.get(a) || [];
+      const dependenciesB = this.graph.get(b) || [];
+      const medianA = this.median(layer, dependenciesA, posA);
+      const medianB = this.median(layer, dependenciesB, posB);
+      return medianA - medianB;
+    });
+  }
+
+  private median(layer: string[], dependencies: string[], pos: number) {
+    let median = 0;
+    for (const d of dependencies) {
+      if (layer.includes(d)) {
+        median += layer.indexOf(d);
+      } else {
+        // @ts-ignore
+        median += this.layerContents.get(pos - 1).indexOf(d);
+      }
+    }
+    return median / dependencies.length;
+  }
+
+
+
+
   public draw() {
     this.layerRanking();
     for (const [node, level] of this.levels.entries()) {
@@ -75,7 +112,10 @@ export class LayeredGraphDrawing {
     }
 
     for (const layer of this.layerContents.keys()) {
-      this.vertexOrdering(layer);
+      //this.vertexOrdering(layer);
+      let nodes = this.layerContents.get(layer) || [];
+      this.sortByMedianHeuristicSweeps(nodes);
+
     }
   }
 }
